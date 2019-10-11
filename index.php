@@ -22,18 +22,17 @@ function show_media_button( $editor_settings, $field_object, $form, $entry ) {
 add_filter( 'gform_rich_text_editor_options', 'show_media_button', 10, 4 );
 
 function alt_lab_front_end_scripts(){
-	wp_enqueue_editor();		
 	wp_enqueue_script( 'mce-view', '', array('tiny_mce') );	
-    wp_enqueue_media();
 }
 
 add_action( 'wp_enqueue_scripts', 'alt_lab_front_end_scripts' );
-add_action('wp_ajax_nopriv_parse-embed', 'parse-embed');
 
 
 function fake_user(){
-    global $wp_rest_auth_cookie;    
-    wp_set_auth_cookie( 1, false, '', '' );
+    if (!is_user_logged_in()){
+        global $wp_rest_auth_cookie;    
+        wp_set_auth_cookie( 7, false, '', '' );
+    }
 }
 
 add_action('init','fake_user');
