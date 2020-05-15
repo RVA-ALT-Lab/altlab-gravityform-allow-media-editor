@@ -2,7 +2,7 @@
 /*
 Plugin Name: ALT Lab Gravity Form Allow Media Upload Editor
 Plugin URI:  https://github.com/
-Description: lets the rich text editor take file uploads on the form side
+Description: Should let the rich text editor take file uploads on the form side
 Version:     1.0
 Author:      ALT Lab
 Author URI:  http://altlab.vcu.edu
@@ -30,7 +30,7 @@ function alt_lab_front_end_scripts(){
 add_action( 'wp_enqueue_scripts', 'alt_lab_front_end_scripts' );
 
 //from the Alan Levine @cogdog
-add_action('init', 'splot_invisible_user');
+add_action('gform_loaded', 'splot_invisible_user');
 
 function splot_invisible_user() {
     if ( !is_user_logged_in() ) {
@@ -61,3 +61,12 @@ function splot_remove_admin_bar() {
     $current_user = wp_get_current_user();
     if ( $current_user->user_login == 'splotcookie'  ) show_admin_bar(false);
 }
+
+//redirects from dashboard to edit post list 
+function splot_no_dashboard ( $url, $request, $user) {
+    $current_user = wp_get_current_user();
+    if ( $current_user->user_login == 'splotcookie'  ) {
+       return get_site_url();
+    }
+}
+add_filter('login_redirect', 'splot_no_dashboard', 10, 3 );
